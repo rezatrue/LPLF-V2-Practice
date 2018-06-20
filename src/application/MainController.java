@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -17,6 +18,8 @@ public class MainController implements Initializable{
 	
 	@FXML
 	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun; 
+	@FXML
+	private TextField tfSelectedFilePath;
 	
 	@FXML
 	private ImageView logoView;
@@ -56,7 +59,19 @@ public class MainController implements Initializable{
 	@FXML
 	private void browseBtnAction(ActionEvent event) {
 		System.out.println("Browse Button");
+		//stackoverflow.com/questions/25491732/how-do-i-open-the-javafx-filechooser-from-a-controller-class/25491787
+		FileChooser fileChooser = new FileChooser();
 		
+		fileChooser.getExtensionFilters().addAll(
+			     new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+			);
+		
+        File file = fileChooser.showOpenDialog(new Stage());
+        
+        if(file != null) {
+        	tfSelectedFilePath.setText(file.getAbsolutePath());
+        }
+        
 	}
 	
 	@FXML
