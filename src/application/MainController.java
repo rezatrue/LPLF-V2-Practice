@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +24,9 @@ public class MainController implements Initializable{
 	@FXML
 	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun, btnPrintList; 
 	@FXML
-	private TextField tfSelectedFilePath;
+	private TextField tfSelectedFilePath, tfLinkedinId;
+	@FXML
+	private PasswordField pfPassword;
 	
 	@FXML
 	private ImageView logoView;
@@ -44,6 +47,11 @@ public class MainController implements Initializable{
 		System.out.println("Initialize");
 		csvFileHandeler = new CsvFileHandeler();
 		fireFoxOperator = new FireFoxOperator();
+		
+		// test settings
+		//tfLinkedinId.setText("rezatrue@yahoo.com");
+		//pfPassword.setText("1Canada12");
+		
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
         logoView.setImage(image);
@@ -60,6 +68,10 @@ public class MainController implements Initializable{
 	@FXML
 	private void loginBtnAction(ActionEvent event) {
 		System.out.println("Login Button");
+		String user = tfLinkedinId.getText();
+		String password = pfPassword.getText();
+		if(!user.isEmpty() && !password.isEmpty())
+			fireFoxOperator.linkedinLogin(user, password);
 	}
 	
 	@FXML
