@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import scrapper.CsvFileHandeler;
+import scrapper.FireFoxOperator;
 import scrapper.Info;
 
 public class MainController implements Initializable{
@@ -29,7 +30,8 @@ public class MainController implements Initializable{
 	
 	CsvFileHandeler csvFileHandeler = null;
 	LinkedList<Info> list = null;
-
+	FireFoxOperator fireFoxOperator = null;
+	
 	// constructor is called before initialize() method
 	public MainController() {
 		System.out.println("Constructor");
@@ -41,6 +43,7 @@ public class MainController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("Initialize");
 		csvFileHandeler = new CsvFileHandeler();
+		fireFoxOperator = new FireFoxOperator();
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
         logoView.setImage(image);
@@ -51,6 +54,7 @@ public class MainController implements Initializable{
 	@FXML
 	private void launchBtnAction(ActionEvent event) {
 		System.out.println("Launch Button");
+		fireFoxOperator.browserLauncher();
 	}
 	
 	@FXML
