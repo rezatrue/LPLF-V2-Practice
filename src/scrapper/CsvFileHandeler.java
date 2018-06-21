@@ -3,54 +3,74 @@ package scrapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CsvFileHandeler {
 
-
-    private static final char DEFAULT_SEPARATOR = ',';
-    private static final char DEFAULT_QUOTE = '"';
+	private LinkedList<Info> list = null;
+	private String location = null;
+    private final char DEFAULT_SEPARATOR = ',';
+    private final char DEFAULT_QUOTE = '"';
 	
-	public static void main(String[] args) {
-		read("22.csv");
+    
+	public CsvFileHandeler() {
 	}
 	
-	
-	public static void read(String filePath) {
+	//mkyong.com/java/how-to-read-and-parse-csv-file-in-java/
+	public LinkedList<Info> read(String filePath) {
+		location = filePath.substring(0, filePath.lastIndexOf("\\")+1);
+		
+		
+		list = new LinkedList<>();
+		Info info = null;
 		
 		try {
+		//howtodoinjava.com/core-java/io/how-to-read-data-from-inputstream-into-string-in-java/	
 		InputStream in = new FileInputStream(new File(filePath));
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        StringBuilder out = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-        	List<String> linelist = parseLine(line);
-            System.out.println("Country [id= " + linelist.get(0) + ", code= " + linelist.get(1) + " , name=" + linelist.get(2) + "]");
-            
-            out.append(linelist);
-        }
-        //System.out.println(out.toString());   //Prints the string content read from input stream
-			
+        String row;
+        
+        while ((row = reader.readLine()) != null) {
+			List<String> line = parseLine(row);
+			info = new Info(line.get(0), line.get(1), line.get(2), line.get(3), line.get(4), line.get(5),
+					line.get(6), line.get(7), line.get(8), line.get(9));
+			list.add(info);
+			System.out.println("[Linkedin_Profile_URL= " + line.get(0) + ", First_Name= " + line.get(1)
+					+ " , Last_Name=" + line.get(2) + ", Email_ID= " + line.get(3) + ", Contact_Number= "
+					+ line.get(4) + " , Location=" + line.get(5) + ", Industry= " + line.get(6) + ", Designation= "
+					+ line.get(7) + " , Company_Name=" + line.get(8) + ", Company_Size= " + line.get(9) + "]");
+
+		}
+        System.out.println("location : " + location);
         reader.close();
         	
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return list;
 	}
 	
 	
-	public static List<String> parseLine(String cvsLine) {
+	public List<String> parseLine(String cvsLine) {
         return parseLine(cvsLine, DEFAULT_SEPARATOR, DEFAULT_QUOTE);
     }
 
-    public static List<String> parseLine(String cvsLine, char separators) {
+    public List<String> parseLine(String cvsLine, char separators) {
         return parseLine(cvsLine, separators, DEFAULT_QUOTE);
     }
 
-    public static List<String> parseLine(String cvsLine, char separators, char customQuote) {
+    public List<String> parseLine(String cvsLine, char separators, char customQuote) {
 
         List<String> result = new ArrayList<>();
 
@@ -134,7 +154,82 @@ public class CsvFileHandeler {
         return result;
     }
 
-	
+    public String write(LinkedList<Info> list, String keyword) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		Calendar cal = Calendar.getInstance();
+		String fileName = dateFormat.format(cal.getTime());
+
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(location + "Linkedin_" + keyword + "_list_" + fileName + ".csv");
+
+			writer.append("Linkedin_Profile_URL");
+			writer.append(",");
+			writer.append("First_Name");
+			writer.append(",");
+			writer.append("Last_Name");
+			writer.append(",");
+			writer.append("Email_ID");
+			writer.append(",");
+			writer.append("Contact_Number");
+			writer.append(",");
+			writer.append("Location");
+			writer.append(",");
+			writer.append("Industry");
+			writer.append(",");
+			writer.append("Designation");
+			writer.append(",");
+			writer.append("Company_Name");
+			writer.append(",");
+			writer.append("Company_Size");
+			writer.append(",");
+			writer.append("\n");
+
+			Iterator<Info> it = list.iterator();
+
+			while (it.hasNext()) {
+				Info info = (Info) it.next();
+				writer.append(commaSkiping(info.getLink()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getFirstName()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getSecondName()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getEmail()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getPhone()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getLocation()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getIndustry()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getCurrentJobTitle()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getCurrentCompany()));
+				writer.append(",");
+				writer.append(commaSkiping(info.getCompanySize()));
+				writer.append("\n");
+			}
+
+			writer.flush();
+			writer.close();
+			return "Done";
+
+		} catch (IOException e) {
+			// e.printStackTrace();
+			return "Error" + e.getMessage();
+		}
+
+	}
+
+	protected String commaSkiping(String text) {
+		String newText = text;
+		if (newText.contains(","))
+			if (!newText.startsWith("\"") && !newText.endsWith("\""))
+				newText = "\"" + newText + "\"";
+		return newText;
+	}
+
 	
 
 }

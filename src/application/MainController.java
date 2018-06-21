@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -13,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import scrapper.CsvFileHandeler;
+import scrapper.Info;
 
 public class MainController implements Initializable{
 	
@@ -77,6 +80,12 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
+		String filepath = tfSelectedFilePath.getText().toString();
+		if(filepath.endsWith(".csv")) {
+			CsvFileHandeler csvFileHandeler = new CsvFileHandeler();
+			LinkedList<Info> list = csvFileHandeler.read(filepath);
+			csvFileHandeler.write(list, list.size()+"");
+		}
 	}
 
 	
