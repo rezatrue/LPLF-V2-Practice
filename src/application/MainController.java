@@ -20,12 +20,15 @@ import scrapper.Info;
 public class MainController implements Initializable{
 	
 	@FXML
-	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun; 
+	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun, btnPrintList; 
 	@FXML
 	private TextField tfSelectedFilePath;
 	
 	@FXML
 	private ImageView logoView;
+	
+	CsvFileHandeler csvFileHandeler = null;
+	LinkedList<Info> list = null;
 
 	// constructor is called before initialize() method
 	public MainController() {
@@ -37,6 +40,7 @@ public class MainController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("Initialize");
+		csvFileHandeler = new CsvFileHandeler();
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
         logoView.setImage(image);
@@ -73,6 +77,10 @@ public class MainController implements Initializable{
         
         if(file != null) {
         	tfSelectedFilePath.setText(file.getAbsolutePath());
+        	String filepath = tfSelectedFilePath.getText().toString();
+    		if(filepath.endsWith(".csv")) {
+    			list = csvFileHandeler.read(filepath);
+    		}
         }
         
 	}
@@ -80,14 +88,13 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		String filepath = tfSelectedFilePath.getText().toString();
-		if(filepath.endsWith(".csv")) {
-			CsvFileHandeler csvFileHandeler = new CsvFileHandeler();
-			LinkedList<Info> list = csvFileHandeler.read(filepath);
-			csvFileHandeler.write(list, list.size()+"");
-		}
 	}
 
+	@FXML
+	private void printListBtnAction(ActionEvent event) {
+		System.out.println("Print Button");
+		csvFileHandeler.write(list, list.size()+"");
+	}
 	
 
 	
