@@ -7,7 +7,10 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -49,8 +52,8 @@ public class MainController implements Initializable{
 		fireFoxOperator = new FireFoxOperator();
 		
 		// test settings
-		//tfLinkedinId.setText("rezatrue@yahoo.com");
-		//pfPassword.setText("1Canada12");
+		tfLinkedinId.setText("rezatrue@yahoo.com");
+		pfPassword.setText("1Canada12");
 		
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
@@ -77,6 +80,16 @@ public class MainController implements Initializable{
 	@FXML
 	private void settingsBtnAction(ActionEvent event) {
 		System.out.println("Settings Button");
+		try {
+			Parent parent = FXMLLoader.load(getClass().getResource("/application/Settings.fxml"));
+			Stage stage = new Stage();
+			stage.setTitle("Settings");
+			stage.setScene(new Scene(parent));
+			stage.setResizable(false);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
