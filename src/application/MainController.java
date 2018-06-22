@@ -135,15 +135,27 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		// testing
-		int i = 0;
-		Info info = list.get(i);
-		String link = info.getLink();
-		if(link.contains("linkedin.com/sales/")) {
-			link = fireFoxOperator.getPublicLink(link);
-			info.setLink(link);
-			list.set(i, info);
+		// need to test 
+		int limits = Integer.parseInt(tfLimits.getText());
+		int index = 0; // number of loop iteration / list serial number
+		int count = 0; // counts number of converted links
+		while (limits != 0) {
+			
+			Info info = list.get(index);
+			String link = info.getLink();
+			if(link.contains("linkedin.com/sales/")) {
+				link = fireFoxOperator.getPublicLink(link);
+				info.setLink(link);
+				list.set(index, info);
+				count++;
+			}
+			
+			index++;
+			System.out.println(count + " Links converted");
+			if(index + 1 == list.size()) break;
+			limits -= count;
 		}
+		
 	}
 
 	@FXML
