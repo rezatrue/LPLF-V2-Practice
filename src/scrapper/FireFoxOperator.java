@@ -262,7 +262,7 @@ public class FireFoxOperator {
 	}
 
 	public void fullPageScroll() {
-		// https://stackoverflow.com/questions/42982950/how-to-scroll-down-the-page-till-bottomend-page-in-the-selenium-webdriver
+		//stackoverflow.com/questions/42982950/how-to-scroll-down-the-page-till-bottomend-page-in-the-selenium-webdriver
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		try {
 			jse.executeScript("scroll(0, 250);");
@@ -308,7 +308,7 @@ public class FireFoxOperator {
 	String infoBtnCssSelector1 = ".more-info-tray > table:nth-child(4) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)";
 
 	public String getPublicLink(String salesProLink) {
-		driver.get(salesProLink);
+		linkOpener(salesProLink);
 		if (!findAndClick(infoBtnCssSelector))
 			return salesProLink;
 		try {

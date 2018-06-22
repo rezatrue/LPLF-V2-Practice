@@ -135,6 +135,15 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
+		// testing
+		int i = 0;
+		Info info = list.get(i);
+		String link = info.getLink();
+		if(link.contains("linkedin.com/sales/")) {
+			link = fireFoxOperator.getPublicLink(link);
+			info.setLink(link);
+			list.set(i, info);
+		}
 	}
 
 	@FXML
