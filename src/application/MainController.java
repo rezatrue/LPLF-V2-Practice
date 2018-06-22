@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +29,7 @@ public class MainController implements Initializable{
 	@FXML
 	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun, btnPrintList; 
 	@FXML
-	private TextField tfSelectedFilePath, tfLinkedinId;
+	private TextField tfSelectedFilePath, tfLinkedinId, tfLimits, tfMessageBox;
 	@FXML
 	private PasswordField pfPassword;
 	
@@ -45,6 +47,9 @@ public class MainController implements Initializable{
 		
 	}
 	
+	
+	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("Initialize");
@@ -58,6 +63,19 @@ public class MainController implements Initializable{
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
         logoView.setImage(image);
+        
+        //stackoverflow.com/questions/7555564/what-is-the-recommended-way-to-make-a-numeric-textfield-in-javafx
+        tfLimits.textProperty().addListener(new ChangeListener<String>() {
+    	    @Override
+    	    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+    	        String newValue) {
+    	        if (newValue.matches("\\d*")) {
+    	            int value = Integer.parseInt(newValue);
+    	        } else {
+    	        	tfLimits.setText(oldValue);
+    	        }
+    	    }
+    	});
 		
 	}
 	
