@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import db.DBHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +46,7 @@ public class MainController implements Initializable{
 	
 	@FXML
 	private ImageView logoView;
+	private DBHandler dBHandler;
 	
 	CsvFileHandeler csvFileHandeler = null;
 	LinkedList<Info> list = null;
@@ -189,8 +191,7 @@ public class MainController implements Initializable{
 
 	private void loginDialoag() {
 		//prefs = Preferences.userRoot().node("db");
-		//dBHandler = new DBHandler();
-		String msg = "";
+		dBHandler = new DBHandler();
 
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -252,12 +253,12 @@ public class MainController implements Initializable{
 
 		result.ifPresent(usernamePassword -> {
 			System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-			// check auth 
-			//dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			if(true)btnLaunch.setDisable(false);
+			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
+			if(msg.contains("Welcome"))
+				btnLaunch.setDisable(false);
+			tfMessageBox.setText(msg);
 
 		});
-
 
 	}
 	
