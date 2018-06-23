@@ -48,17 +48,19 @@ public class MainController implements Initializable{
 	}
 	
 	
-	
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("Initialize");
 		csvFileHandeler = new CsvFileHandeler();
 		fireFoxOperator = new FireFoxOperator();
 		
+		btnLogin.setDisable(true);
+		btnBrowse.setDisable(true);
+		btnRun.setDisable(true);
+		
 		// test settings
 		tfLinkedinId.setText("rezatrue@yahoo.com");
-		pfPassword.setText("1Canada12");
+		pfPassword.setText("1Canada");
 		
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
@@ -83,7 +85,11 @@ public class MainController implements Initializable{
 	@FXML
 	private void launchBtnAction(ActionEvent event) {
 		System.out.println("Launch Button");
-		fireFoxOperator.browserLauncher();
+		if(fireFoxOperator.browserLauncher()) {
+			btnLogin.setDisable(false);
+			
+		}
+		
 	}
 	
 	@FXML
@@ -92,7 +98,8 @@ public class MainController implements Initializable{
 		String user = tfLinkedinId.getText();
 		String password = pfPassword.getText();
 		if(!user.isEmpty() && !password.isEmpty())
-			fireFoxOperator.linkedinLogin(user, password);
+			if(fireFoxOperator.linkedinLogin(user, password))
+				btnBrowse.setDisable(false);
 	}
 	
 	@FXML
@@ -127,6 +134,7 @@ public class MainController implements Initializable{
         	String filepath = tfSelectedFilePath.getText().toString();
     		if(filepath.endsWith(".csv")) {
     			list = csvFileHandeler.read(filepath);
+    			if(list.size() > 0) btnRun.setDisable(false);
     		}
         }
         
@@ -163,8 +171,6 @@ public class MainController implements Initializable{
 		System.out.println("Print Button");
 		csvFileHandeler.write(list, list.size()+"");
 	}
-	
-
 	
 	
 }
