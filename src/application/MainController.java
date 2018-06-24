@@ -74,7 +74,6 @@ public class MainController implements Initializable{
 		btnBrowse.setDisable(true);
 		btnRun.setDisable(true);
 		
-		// test settings
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
 		
@@ -256,9 +255,9 @@ public class MainController implements Initializable{
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(usernamePassword -> {
-			System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
 			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			if(msg.contains("Welcome"))
+			//if(msg.contains("Welcome"))
 				btnLaunch.setDisable(false);
 			tfMessageBox.setText(msg);
 

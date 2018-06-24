@@ -21,12 +21,13 @@ public class DBHandler {
 	private Preferences prefs;
 
 	public DBHandler() {
-		prefs = Preferences.userRoot().node("db");
+		prefs = Preferences.userRoot().node("db_lplf");
 		this.url = "jdbc:mysql://" + prefs.get("dataserver", "");
 		this.dbuser = prefs.get("dbuser", "");
 		this.dbpass = prefs.get("dbpassword", "");
 		this.table = prefs.get("tablename", "");
 		this.column = prefs.get("columnname", "");
+		
 		}
 	
 	public DBHandler(String url, String table, String column, String dbuser, String dbpass) {
