@@ -97,8 +97,6 @@ public class MainController implements Initializable{
     	});
         
         loginDialoag();
-        // temp testing purpose only
-        btnBrowse.setDisable(false);
 	}
 	
 	
@@ -178,7 +176,8 @@ public class MainController implements Initializable{
 			Iterator<Info> it = list.iterator();
 			while (it.hasNext()) {
 				String link = it.next().getLink();
-				if (link.contains("linkedin.com/sales/")) {
+				// for testing use linkedin.com 
+				if (link.contains("linkedin.com")) {
 					noValidLink = false;
 					break;
 				}
@@ -186,28 +185,34 @@ public class MainController implements Initializable{
 			if (noValidLink)
 				tfMessageBox.setText("List doesn't contain any sales Nav link");
 		}
-		if(!noValidLink);
+
 		// need to test 
-		/*
-		int index = 0; // number of loop iteration / list serial number
-		int count = 0; // counts number of converted links
-		while (limits != 0) {
-			
-			Info info = list.get(index);
-			String link = info.getLink();
-			if(link.contains("linkedin.com/sales/")) {
-				link = fireFoxOperator.getPublicLink(link);
-				info.setLink(link);
-				list.set(index, info);
-				count++;
-			}
-			
-			index++;
-			System.out.println(count + " Links converted");
-			if(index + 1 == list.size()) break;
-			limits -= count;
+		
+		if (!noValidLink) {
+			int index = 0; // number of loop iteration / list serial number
+			int count = 0; // counts number of converted links
+			while (limits != 0) {
+
+				Info info = list.get(index);
+				String link = info.getLink();
+				if (link.contains("linkedin.com")) {
+					String newlink = fireFoxOperator.getPublicLink(link);
+					if(link!=newlink) {
+						System.out.println(count + " Links converted");
+						info.setLink(newlink);
+						list.set(index, info);
+						count++;
+					}
+					
+				}
+
+				index++;
+				if (index + 1 == list.size())
+					break;
+				limits -= count;
+			} 
 		}
-		*/
+		
 	}
 
 	@FXML
