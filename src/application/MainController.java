@@ -186,7 +186,8 @@ public class MainController implements Initializable{
 	@FXML
 	private void printListBtnAction(ActionEvent event) {
 		System.out.println("Print Button");
-		csvFileHandeler.write(list, list.size()+"");
+		int size = (list != null) ? list.size() : 0 ;
+		csvFileHandeler.write(list, size);
 	}
 	
 	// source http://code.makery.ch/blog/javafx-dialogs-official/
