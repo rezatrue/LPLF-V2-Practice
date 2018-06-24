@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 import db.DBHandler;
 import javafx.application.Platform;
@@ -47,6 +48,7 @@ public class MainController implements Initializable{
 	@FXML
 	private ImageView logoView;
 	private DBHandler dBHandler;
+	private Preferences prefs;
 	
 	CsvFileHandeler csvFileHandeler = null;
 	LinkedList<Info> list = null;
@@ -63,6 +65,8 @@ public class MainController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		System.out.println("Initialize");
+		
+		prefs = Preferences.userRoot().node("db_lplf");
 		csvFileHandeler = new CsvFileHandeler();
 		fireFoxOperator = new FireFoxOperator();
 		btnLaunch.setDisable(true);
@@ -71,8 +75,8 @@ public class MainController implements Initializable{
 		btnRun.setDisable(true);
 		
 		// test settings
-		tfLinkedinId.setText("rezatrue@yahoo.com");
-		pfPassword.setText("1Canada");
+		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
+		pfPassword.setText(prefs.get("linkedinPassword", ""));
 		
 		File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
@@ -190,7 +194,7 @@ public class MainController implements Initializable{
 	// just copy pest
 
 	private void loginDialoag() {
-		//prefs = Preferences.userRoot().node("db");
+		
 		dBHandler = new DBHandler();
 
 		// Create the custom dialog.
@@ -215,10 +219,10 @@ public class MainController implements Initializable{
 
 		TextField username = new TextField();
 		username.setPromptText("Username");
-		//username.setText(prefs.get("user", ""));
+		username.setText(prefs.get("user", ""));
 		PasswordField password = new PasswordField();
 		password.setPromptText("Password");
-		//password.setText(prefs.get("password", ""));
+		password.setText(prefs.get("password", ""));
 
 		grid.add(new Label("Username:"), 0, 0);
 		grid.add(username, 1, 0);
