@@ -154,12 +154,19 @@ public class MainController implements Initializable{
     			if(list.size() > 0) btnRun.setDisable(false);
     		}
         }
+     // Notification need to be added
+     // please update your list using proper template
         
 	}
 	
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
+		// Notification before run
+		// "List doesn't contain any sales Nav links" 
+		// "List size ZERO"
+		// "Please set number of links need to be converted" 
+		
 		// need to test 
 		int limits = Integer.parseInt(tfLimits.getText());
 		int index = 0; // number of loop iteration / list serial number
@@ -204,7 +211,6 @@ public class MainController implements Initializable{
 
 		// Set the icon (must be included in the project).
         //dialog.setGraphic(new ImageView(this.getClass().getResource("image/login.png").toString()));
-		
 		
 
 		// Set the button types.
