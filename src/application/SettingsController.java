@@ -64,7 +64,7 @@ public class SettingsController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		prefs = Preferences.userRoot().node("db");
+		prefs = Preferences.userRoot().node("db_lplf");
 		txtuserName.setText(prefs.get("user", ""));
 		txtpassword.setText(prefs.get("password", ""));
 		txtLinkedinUser.setText(prefs.get("linkedinUser", ""));
