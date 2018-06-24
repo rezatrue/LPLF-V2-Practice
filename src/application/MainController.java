@@ -2,7 +2,9 @@ package application;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
@@ -95,7 +97,8 @@ public class MainController implements Initializable{
     	});
         
         loginDialoag();
-		
+        // temp testing purpose only
+        btnBrowse.setDisable(false);
 	}
 	
 	
@@ -104,7 +107,6 @@ public class MainController implements Initializable{
 		System.out.println("Launch Button");
 		if(fireFoxOperator.browserLauncher()) {
 			btnLogin.setDisable(false);
-			
 		}
 		
 	}
@@ -162,13 +164,31 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		// Notification before run
-		// "List doesn't contain any sales Nav links" 
-		// "List size ZERO"
-		// "Please set number of links need to be converted" 
 		
+		int limits = 0;
+		if(!tfLimits.getText().isEmpty()) {
+			limits = Integer.parseInt(tfLimits.getText());
+			}
+		System.out.println("limits : "+ limits);
+		if(limits == 0)
+			tfMessageBox.setText("Please enter a number of links need to be converted");
+	
+		boolean noValidLink = true;
+		if (limits > 0) {
+			Iterator<Info> it = list.iterator();
+			while (it.hasNext()) {
+				String link = it.next().getLink();
+				if (link.contains("linkedin.com/sales/")) {
+					noValidLink = false;
+					break;
+				}
+			}
+			if (noValidLink)
+				tfMessageBox.setText("List doesn't contain any sales Nav link");
+		}
+		if(!noValidLink);
 		// need to test 
-		int limits = Integer.parseInt(tfLimits.getText());
+		/*
 		int index = 0; // number of loop iteration / list serial number
 		int count = 0; // counts number of converted links
 		while (limits != 0) {
@@ -187,7 +207,7 @@ public class MainController implements Initializable{
 			if(index + 1 == list.size()) break;
 			limits -= count;
 		}
-		
+		*/
 	}
 
 	@FXML

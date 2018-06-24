@@ -56,8 +56,13 @@ public class FireFoxOperator {
 
 		driver = new FirefoxDriver(capabilities);
 
-		driver.get(url);
+		openUrl(url);
 
+		return true;
+	}
+	
+	public boolean openUrl(String url) {
+		driver.get(url);
 		return true;
 	}
 
