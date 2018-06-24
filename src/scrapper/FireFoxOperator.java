@@ -30,14 +30,16 @@ public class FireFoxOperator {
 	private Preferences prefs;
 
 	public FireFoxOperator() {
-		prefs = Preferences.userRoot().node("db");
-		//this.profileName = prefs.get("profilename", "");
+		prefs = Preferences.userRoot().node("db_lplf");
+		String profName = "";
+		this.profileName = ((profName = prefs.get("profilename", "")).isEmpty()) ? "default" : profName;
+
 		// this.filefoxdir = prefs.get("firefoxlocation", "");
-		//this.geckodriverdir = prefs.get("geckodriverlocation", "");
+		this.geckodriverdir = prefs.get("geckodriverlocation", "");
 
 		// resource location explicitly stated for testing purpose
-		this.profileName = "default";
-		this.geckodriverdir = "Geckodriver\\v0.21.0-win64\\geckodriver.exe";
+		//this.profileName = "default";
+		//this.geckodriverdir = "Geckodriver\\v0.21.0-win64\\geckodriver.exe";
 
 	}
 
