@@ -103,7 +103,10 @@ public class MainController implements Initializable{
 	@FXML
 	private void launchBtnAction(ActionEvent event) {
 		System.out.println("Launch Button");
-		if(fireFoxOperator.browserLauncher()) {
+		tfMessageBox.setText("Lunching Browser, Please wait......");
+		String msg = fireFoxOperator.browserLauncher();
+		tfMessageBox.setText(msg);
+		if(!msg.contains("Error")) {
 			btnLogin.setDisable(false);
 		}
 		

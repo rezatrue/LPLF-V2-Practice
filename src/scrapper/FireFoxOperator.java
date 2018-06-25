@@ -43,8 +43,9 @@ public class FireFoxOperator {
 
 	}
 
-	public boolean browserLauncher() {
+	public String browserLauncher() {
 
+		try {
 		ProfilesIni profile = new ProfilesIni();
 		FirefoxProfile myprofile = profile.getProfile(profileName);
 
@@ -57,8 +58,11 @@ public class FireFoxOperator {
 		driver = new FirefoxDriver(capabilities);
 
 		openUrl(url);
-
-		return true;
+		}catch (Exception e) {
+			return "Error !!! " + e.getMessage();
+		}
+		
+		return "Browser is lunched properly, please proceed";
 	}
 	
 	public boolean openUrl(String url) {
