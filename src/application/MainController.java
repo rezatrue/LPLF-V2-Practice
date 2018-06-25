@@ -147,15 +147,20 @@ public class MainController implements Initializable{
         File file = fileChooser.showOpenDialog(new Stage());
         
         if(file != null) {
-        	tfSelectedFilePath.setText(file.getAbsolutePath());
-        	String filepath = tfSelectedFilePath.getText().toString();
+        	String filepath = file.getAbsolutePath();
     		if(filepath.endsWith(".csv")) {
     			list = csvFileHandeler.read(filepath);
-    			if(list.size() > 0) btnRun.setDisable(false);
+    			if(list.size() == 0) {
+    				btnRun.setDisable(true);
+    				filepath = "";
+    				tfMessageBox.setText("File is not in proper format");
+    			}else if(list.size() > 0) {
+    				btnRun.setDisable(false);
+    				tfMessageBox.setText("List size : "+ list.size());
+    			}
     		}
+        	tfSelectedFilePath.setText(filepath);
         }
-     // Notification need to be added
-     // please update your list using proper template
         
 	}
 	

@@ -32,7 +32,6 @@ public class CsvFileHandeler {
 	public LinkedList<Info> read(String filePath) {
 		location = filePath.substring(0, filePath.lastIndexOf("\\")+1);
 		
-		
 		list = new LinkedList<>();
 		Info info = null;
 		
@@ -42,24 +41,39 @@ public class CsvFileHandeler {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String row;
         
-        while ((row = reader.readLine()) != null) {
+        boolean rightFormat = false;
+        if ((row = reader.readLine()) != null) {
 			List<String> line = parseLine(row);
-			info = new Info(line.get(0), line.get(1), line.get(2), line.get(3), line.get(4), line.get(5),
-					line.get(6), line.get(7), line.get(8), line.get(9));
-			list.add(info);
-			System.out.println("[Linkedin_Profile_URL= " + line.get(0) + ", First_Name= " + line.get(1)
-					+ " , Last_Name=" + line.get(2) + ", Email_ID= " + line.get(3) + ", Contact_Number= "
-					+ line.get(4) + " , Location=" + line.get(5) + ", Industry= " + line.get(6) + ", Designation= "
-					+ line.get(7) + " , Company_Name=" + line.get(8) + ", Company_Size= " + line.get(9) + "]");
-
+			
+			if(line.get(0).contains("Linkedin_Profile_URL") && line.get(1).contains("First_Name") &&
+					line.get(2).contains("Last_Name") && line.get(3).contains("Email_ID") && line.get(4).contains("Contact_Number") &&
+					line.get(5).contains("Location") && line.get(6).contains("Industry") && line.get(7).contains("Designation") &&
+					line.get(8).contains("Company_Name") && line.get(9) !="Company_Size")
+				rightFormat = true;
 		}
+        
+        if(rightFormat) {
+	        while ((row = reader.readLine()) != null) {
+				List<String> line = parseLine(row);
+				info = new Info(line.get(0), line.get(1), line.get(2), line.get(3), line.get(4), line.get(5),
+						line.get(6), line.get(7), line.get(8), line.get(9));
+				list.add(info);
+				
+				System.out.println("[Linkedin_Profile_URL= " + line.get(0) + ", First_Name= " + line.get(1)
+						+ " , Last_Name=" + line.get(2) + ", Email_ID= " + line.get(3) + ", Contact_Number= "
+						+ line.get(4) + " , Location=" + line.get(5) + ", Industry= " + line.get(6) + ", Designation= "
+						+ line.get(7) + " , Company_Name=" + line.get(8) + ", Company_Size= " + line.get(9) + "]");
+			}
+		}
+        
         System.out.println("location : " + location);
         reader.close();
         	
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+        System.out.println("size : " + list.size());
+
 		return list;
 	}
 	
