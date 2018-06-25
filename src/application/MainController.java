@@ -108,6 +108,7 @@ public class MainController implements Initializable{
 		tfMessageBox.setText(msg);
 		if(!msg.contains("Error")) {
 			btnLogin.setDisable(false);
+			btnLaunch.setDisable(true);
 		}
 		
 	}
@@ -117,9 +118,15 @@ public class MainController implements Initializable{
 		System.out.println("Login Button");
 		String user = tfLinkedinId.getText();
 		String password = pfPassword.getText();
-		if(!user.isEmpty() && !password.isEmpty())
-			if(fireFoxOperator.linkedinLogin(user, password))
+		if(!user.isEmpty() && !password.isEmpty()) {
+			tfMessageBox.setText("Attempting to login");
+			if(fireFoxOperator.linkedinLogin(user, password)) {
 				btnBrowse.setDisable(false);
+				tfMessageBox.setText("Successfully logged in");
+			}else
+				tfMessageBox.setText("Unable to login, Please try manually");
+		}else
+			tfMessageBox.setText("Please Enter your Linkedin ID & Password");
 	}
 	
 	@FXML
