@@ -116,17 +116,29 @@ public class MainController implements Initializable{
 	@FXML
 	private void loginBtnAction(ActionEvent event) {
 		System.out.println("Login Button");
-		String user = tfLinkedinId.getText();
-		String password = pfPassword.getText();
-		if(!user.isEmpty() && !password.isEmpty()) {
-			tfMessageBox.setText("Attempting to login");
-			if(fireFoxOperator.linkedinLogin(user, password)) {
-				btnBrowse.setDisable(false);
-				tfMessageBox.setText("Successfully logged in");
+		
+		if(btnLogin.getText().contains("Login")) {
+			
+			String user = tfLinkedinId.getText();
+			String password = pfPassword.getText();
+			if(!user.isEmpty() && !password.isEmpty()) {
+				tfMessageBox.setText("Attempting to login");
+				if(fireFoxOperator.linkedinLogin(user, password)) {
+					btnBrowse.setDisable(false);
+					btnLogin.setText("Sign Out");
+					tfMessageBox.setText("Successfully logged in");
+				}else
+					tfMessageBox.setText("Unable to login, Please try manually");
 			}else
-				tfMessageBox.setText("Unable to login, Please try manually");
-		}else
-			tfMessageBox.setText("Please Enter your Linkedin ID & Password");
+				tfMessageBox.setText("Please Enter your Linkedin ID & Password");
+		}
+		
+		else if(btnLogin.getText().contains("Sign Out")) {
+			if(fireFoxOperator.signOut()) {
+				btnLogin.setText("Login");
+				tfMessageBox.setText("Sign Out Successfully");
+			}
+		}
 	}
 	
 	@FXML
