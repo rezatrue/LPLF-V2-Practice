@@ -297,7 +297,7 @@ public class MainController implements Initializable{
 		result.ifPresent(usernamePassword -> {
 			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
 			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			//if(msg.contains("Welcome"))
+			if(msg.contains("Welcome"))
 				btnLaunch.setDisable(false);
 			tfMessageBox.setText(msg);
 
