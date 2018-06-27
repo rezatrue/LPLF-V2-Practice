@@ -118,7 +118,7 @@ public class MainController implements Initializable{
 		System.out.println("Login Button");
 		
 		if(btnLogin.getText().contains("Login")) {
-			
+			btnLogin.setText("Sign Out");
 			String user = tfLinkedinId.getText();
 			String password = pfPassword.getText();
 			if(!user.isEmpty() && !password.isEmpty()) {
