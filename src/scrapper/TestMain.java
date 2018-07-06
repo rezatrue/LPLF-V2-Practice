@@ -9,9 +9,13 @@ public class TestMain {
 	fireFoxOperator.browserLauncher();
 	fireFoxOperator.openUrl("https://www.linkedin.com/");
 	
-	fireFoxOperator.linkedinLogin("", "");
+	String url = "";
+	String user = "";
+	String pass = "";
 	
-	fireFoxOperator.getPublicLink("");
+	fireFoxOperator.linkedinLogin(user, pass);
+	
+	fireFoxOperator.getPublicLink(url);
 
 
 	}
