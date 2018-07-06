@@ -318,21 +318,24 @@ public class FireFoxOperator {
 	String infoBtnCssSelector = "#topcard > div.module-footer > ul > li > button";
 	String infoBtnCssSelector1 = ".more-info-tray > table:nth-child(4) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)";
 	String infoBtnCssSelector2 = ".profile-topcard-actions__overflow-toggle.button-round-tertiary-medium-muted";
-
+	String infoBtnCssSelector3 = "button.profile-topcard-actions__overflow-toggle.button-round-tertiary-medium-muted";
 	// last modified 5 July 2018
 	public String getPublicLink(String salesProLink) {
 		System.out.println("inhere 1");
+		
 		linkOpener(salesProLink);
-		if (!findAndClick(infoBtnCssSelector))
+		
+		if (!findAndClick(infoBtnCssSelector3))
 			return salesProLink;
+		
 		try {
-			System.out.println("inhere 1");
-			findUrlInSourcePage();
-			/*
-			WebElement element = driver.findElement(By.cssSelector(infoBtnCssSelector2));
+			System.out.println("inhere 11");
+			//findUrlInSourcePage();
+			
+			WebElement element = driver.findElement(By.cssSelector(infoBtnCssSelector3));
 			System.out.println(":- " + element.getText());
 			return element.getText();
-			*/
+			
 		} catch (Exception e) {
 		}
 
@@ -354,6 +357,7 @@ public class FireFoxOperator {
 	public String findUrlInSourcePage() {
 		String txtMatch = "https://www.linkedin.com/in/";
 		String source = getSourseCode();
+		System.out.println(source);
 		if(source.contains(txtMatch)) {
 			
 			String urltxt = source.substring(source.indexOf(txtMatch), source.indexOf("\",\"location\""));
