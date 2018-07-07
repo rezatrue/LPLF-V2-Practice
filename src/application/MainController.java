@@ -74,7 +74,7 @@ public class MainController implements Initializable{
 		btnLaunch.setDisable(true);
 		btnLogin.setDisable(true);
 		btnBrowse.setDisable(true);
-		btnRun.setDisable(true);
+		btnRun.setDisable(true); 
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
@@ -191,49 +191,50 @@ public class MainController implements Initializable{
 		System.out.println("Run Button");
 		
 		
-				int limits = 0;
-				if(!tfLimits.getText().isEmpty()) {
-					limits = Integer.parseInt(tfLimits.getText());
-					}
-				System.out.println("limits : "+ limits);
-				if(limits == 0) {
-					tfMessageBox.setText("Please enter a number of links need to be converted");
-					return;
+		// checking limits, how many links need to convert
+		int limits = 0;
+		if(!tfLimits.getText().isEmpty()) {
+			limits = Integer.parseInt(tfLimits.getText());
+			}
+		System.out.println("limits : "+ limits);
+		if(limits == 0) {
+			tfMessageBox.setText("Please enter a number of links need to be converted");
+			return;
+		}
+		
+		// Checking if there is any sales link in the list 
+		boolean noValidLink = true;
+		if (list.size() > 0) {
+			Iterator<Info> it = list.iterator();
+			while (it.hasNext()) {
+				String link = it.next().getLink();
+				// for testing use linkedin sales nav links presence  
+				if (link.contains("linkedin.com/sales")) {
+					noValidLink = false;
+					break;
 				}
-					
-				boolean noValidLink = true;
-				if (limits > 0) {
-					Iterator<Info> it = list.iterator();
-					while (it.hasNext()) {
-						String link = it.next().getLink();
-						// for testing use linkedin sales nav links presence  
-						if (link.contains("linkedin.com/sales")) {
-							noValidLink = false;
-							break;
-						}
-					}
-					
-				}
+			}
+			if (noValidLink) {
+				tfMessageBox.setText("List doesn't contain any sales Nav link");
+				return;
+			}
+		}
 
-				// need to test 
-				if (noValidLink) {
-					tfMessageBox.setText("List doesn't contain any sales Nav link");
-					return;
-				}
-				else {
+		// setting Button text
+		if(btnRun.getText().equals("Run"))
+			btnRun.setText("Pause");
+		else if(btnRun.getText().equals("Pause"))
+				btnRun.setText("Run");
+		
+		
+		// need to test 
+				/*
 					
-					new Runnable() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-				
 						int index = 0; // number of loop iteration / list serial number
 						int count = 0; // counts number of converted links
 						Info info = null;
 						String link = "";
 						String newlink = "";
-						int limits = Integer.parseInt(tfLimits.getText());
 						while (limits != 0) {
 
 							info = list.get(index);
@@ -241,7 +242,7 @@ public class MainController implements Initializable{
 							if (link.contains("linkedin.com/sales")) {
 								newlink = fireFoxOperator.getPublicLink(link);
 								if(link!=newlink) {
-									tfMessageBox.setText(count + " Links converted, process continues....");
+									passMessage(count + " Links converted, process continues....");
 									System.out.println(count + " Links converted");
 									info.setLink(newlink);
 									list.set(index, info);
@@ -252,19 +253,24 @@ public class MainController implements Initializable{
 
 							index++;
 							if (index + 1 == list.size() || index + 1 == count) {
-								tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
+								passMessage("Conversion Completed. Total : "+ count + " links converted.");
 								return;
 							}
 								
 						} 
-					
-				}
+					*/
 				
 				
-				
-			}.run();
-		}
-		
+	}
+	
+	private void passMessage(String msg) {
+		new Runnable() {
+			
+			@Override
+			public void run() {
+				tfMessageBox.setText(msg);				
+			}
+		};
 		
 	}
 	
