@@ -155,7 +155,7 @@ public class FireFoxOperator {
 	}
 
 	public String getSourseCode() {
-		//fullPageScroll(); temporarily blocked
+		//fullPageScroll(); // don't to scroll full page for this project
 		String pageSource = "";
 		pageSource = driver.getPageSource().toString();
 		// System.out.println(pageSource);
@@ -323,7 +323,7 @@ public class FireFoxOperator {
 	String infoBtnCssSelector3 = "button.profile-topcard-actions__overflow-toggle.button-round-tertiary-medium-muted";
 	String infoBtnCssSelector4 = "a.view-linkedin.profile-topcard-actions__overflow-item";
 	
-	// last modified 5 July 2018
+	// last modified 7 July 2018
 	public String getPublicLink(String salesProLink) {
 		System.out.println("inhere 1");
 		
@@ -335,12 +335,12 @@ public class FireFoxOperator {
 		try {
 			System.out.println("inhere 11");
 			
-			
-			WebElement element = driver.findElement(By.cssSelector(infoBtnCssSelector4));
-			System.out.println(":- " + element.getText());
-			findUrlInSourcePage();
-			
-			return element.getText();
+//			WebElement element = driver.findElement(By.cssSelector(infoBtnCssSelector4));
+//			System.out.println(":- " + element.getText());
+			String urltxt = findUrlInSourcePage();
+			System.out.println("urltxt : "+ urltxt);
+			//return element.getText();
+			return (urltxt != "") ? urltxt : salesProLink;
 			
 		} catch (Exception e) {
 		}
@@ -349,33 +349,28 @@ public class FireFoxOperator {
 	}
 
 	private boolean findAndClick(String selector) {
+		By by = null;
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		
 		try {
-			By by = By.cssSelector(selector);
-			WebDriverWait wait = new WebDriverWait(driver, 60);
-			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			 by = By.cssSelector(selector);
+			 wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 			driver.findElement(by).click();
 			return true;
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		return false;
 	}
 	
 	public String findUrlInSourcePage() {
 		String txtMatch = "https://www.linkedin.com/in/";
 		String source = getSourseCode();
-		//System.out.println(source);
-		System.out.println("inhere 111");
 
 		if(source.contains(txtMatch)) {
-			System.out.println("inhere 1111");
-
-			String urltxt = source.substring(source.indexOf(txtMatch), source.length());
-			String urltxt1 = urltxt.substring(0, urltxt.indexOf("location"));
-			System.out.println("urltxt : "+ urltxt1);
-		}else {
-			return "";
+			String fristSubString = source.substring(source.indexOf(txtMatch), source.length());
+			String urltxt = fristSubString.substring(0, fristSubString.indexOf(",")-1);
+			
+			return (urltxt.contains(txtMatch)) ? urltxt : "";
 		}
-		
 		
 		return "";
 	}
