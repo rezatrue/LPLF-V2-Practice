@@ -74,7 +74,7 @@ public class MainController implements Initializable{
 		btnLaunch.setDisable(true);
 		btnLogin.setDisable(true);
 		btnBrowse.setDisable(true);
-		btnRun.setDisable(false); 
+		btnRun.setDisable(true); 
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
@@ -189,7 +189,6 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		/*
 		
 		// checking limits, how many links need to convert
 		int limits = 0;
@@ -220,85 +219,65 @@ public class MainController implements Initializable{
 			}
 		}
 
-		*/
 		
-		// setting Button text
-		boolean run = false;
-		//convertSchdule = null;
 		if(btnRun.getText().equals("Run"))
 			{btnRun.setText("Pause"); 
-			convertSchdule();
-			//if(convertSchdule.isInterrupted())convertSchdule.resume();
-			//if(convertSchdule== null) convertSchdule.start();
-			//if(!convertSchdule.isAlive())convertSchdule.start();
-			
+			newRunThread();
 			}
 		else if(btnRun.getText().equals("Pause"))
-				{btnRun.setText("Run"); 
-				//if(convertSchdule.isAlive())convertSchdule.destroy();
-				
-				}
-		
-				
-		// need to test 
-				/*
-					
-						int index = 0; // number of loop iteration / list serial number
-						int count = 0; // counts number of converted links
-						Info info = null;
-						String link = "";
-						String newlink = "";
-						while (limits != 0) {
-
-							info = list.get(index);
-							link = info.getLink();
-							if (link.contains("linkedin.com/sales")) {
-								newlink = fireFoxOperator.getPublicLink(link);
-								if(link!=newlink) {
-									passMessage(count + " Links converted, process continues....");
-									System.out.println(count + " Links converted");
-									info.setLink(newlink);
-									list.set(index, info);
-									count++;
-								}
-								
-							}
-
-							index++;
-							if (index + 1 == list.size() || index + 1 == count) {
-								passMessage("Conversion Completed. Total : "+ count + " links converted.");
-								return;
-							}
-								
-						} 
-					*/
-				
+				btnRun.setText("Run"); 
+			
 				
 	}
 	
 
 	
-	public void convertSchdule() {
+	public void newRunThread() {
 
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				System.out.println(">>>>");
-				int count = 0;
-				while(btnRun.getText().contains("Pause")) {
-					System.out.println(count++);
-					if(btnRun.getText().contains("Run"))
-						break;
+					
+				int index = 0; // number of loop iteration / list serial number
+				int count = 0; // counts number of converted links
+				int limits = Integer.parseInt(tfLimits.getText());
+				Info info = null;
+				String link = "";
+				String newlink = "";
+				while (limits != 0 && btnRun.getText().contains("Pause")) {
+
+					info = list.get(index);
+					link = info.getLink();
+					if (link.contains("linkedin.com/sales")) {
+						newlink = fireFoxOperator.getPublicLink(link);
+						if(link!=newlink) {
+							tfMessageBox.setText(count + " Links converted, process continues....");
+							System.out.println(count + " Links converted");
+							info.setLink(newlink);
+							list.set(index, info);
+							count++;
+						}
+						
+					}
+
+					index++;
+					if (index + 1 == list.size() || index + 1 == count) {
+						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
+						tfLimits.setText(String.valueOf(limits - count));
+						return;
+					}
+					
+					if(btnRun.getText().contains("Run")) {
+						tfLimits.setText(String.valueOf(limits - count));
+						return;
+					}
+						
 				}
-								
 			}
 		}).start();	
 	}
-		
-		
-
-	
 	
 	
 	private void passMessage(String msg) {
