@@ -74,7 +74,7 @@ public class MainController implements Initializable{
 		btnLaunch.setDisable(true);
 		btnLogin.setDisable(true);
 		btnBrowse.setDisable(true);
-		btnRun.setDisable(true); 
+		btnRun.setDisable(false); 
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
@@ -189,7 +189,7 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		
+		/*
 		
 		// checking limits, how many links need to convert
 		int limits = 0;
@@ -220,13 +220,26 @@ public class MainController implements Initializable{
 			}
 		}
 
+		*/
+		
 		// setting Button text
+		boolean run = false;
+		//convertSchdule = null;
 		if(btnRun.getText().equals("Run"))
-			btnRun.setText("Pause");
+			{btnRun.setText("Pause"); 
+			convertSchdule();
+			//if(convertSchdule.isInterrupted())convertSchdule.resume();
+			//if(convertSchdule== null) convertSchdule.start();
+			//if(!convertSchdule.isAlive())convertSchdule.start();
+			
+			}
 		else if(btnRun.getText().equals("Pause"))
-				btnRun.setText("Run");
+				{btnRun.setText("Run"); 
+				//if(convertSchdule.isAlive())convertSchdule.destroy();
+				
+				}
 		
-		
+				
 		// need to test 
 				/*
 					
@@ -262,6 +275,34 @@ public class MainController implements Initializable{
 				
 				
 	}
+	
+
+	
+	public void convertSchdule() {
+
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				int count = 0;
+				while(btnRun.getText().contains("Pause")) {
+					System.out.println(count++);
+					break;
+				}
+				
+//				if(btnRun.getText().contains("Run")) {
+//					convertSchdule.destroy();
+//					convertSchdule = null;
+//				}
+				
+			}
+		});	
+	}
+		
+		
+
+	
+	
 	
 	private void passMessage(String msg) {
 		new Runnable() {
