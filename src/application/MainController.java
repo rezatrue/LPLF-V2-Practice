@@ -284,19 +284,16 @@ public class MainController implements Initializable{
 			
 			@Override
 			public void run() {
+				System.out.println(">>>>");
 				int count = 0;
 				while(btnRun.getText().contains("Pause")) {
 					System.out.println(count++);
-					break;
+					if(btnRun.getText().contains("Run"))
+						break;
 				}
-				
-//				if(btnRun.getText().contains("Run")) {
-//					convertSchdule.destroy();
-//					convertSchdule = null;
-//				}
-				
+								
 			}
-		});	
+		}).start();	
 	}
 		
 		
