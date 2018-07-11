@@ -197,7 +197,7 @@ public class MainController implements Initializable{
 			}
 		System.out.println("limits : "+ limits);
 		if(limits == 0) {
-			tfMessageBox.setText("Please enter a number of links need to be converted");
+			tfMessageBox.setText("Please enter number of links need to be converted");
 			return;
 		}
 		
@@ -253,42 +253,27 @@ public class MainController implements Initializable{
 					if (link.contains("linkedin.com/sales")) {
 						newlink = fireFoxOperator.getPublicLink(link);
 						if(link!=newlink) {
-							tfMessageBox.setText(count + " Links converted, process continues....");
-							System.out.println(count + " Links converted");
 							info.setLink(newlink);
 							list.set(index, info);
 							count++;
+							limits--;
+							tfMessageBox.setText(count + " Links converted, process continues....");
+							System.out.println(count + " Links converted");
 						}
 						
 					}
 
 					index++;
-					if (index + 1 == list.size() || index + 1 == count) {
+					if (index + 1 == list.size() || index + 1 == count || btnRun.getText().contains("Run") || limits <= 0) {
+						btnRun.setText("Run");
 						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
-						tfLimits.setText(String.valueOf(limits - count));
-						return;
-					}
-					
-					if(btnRun.getText().contains("Run")) {
-						tfLimits.setText(String.valueOf(limits - count));
+						tfLimits.setText(String.valueOf(limits));
 						return;
 					}
 						
 				}
 			}
 		}).start();	
-	}
-	
-	
-	private void passMessage(String msg) {
-		new Runnable() {
-			
-			@Override
-			public void run() {
-				tfMessageBox.setText(msg);				
-			}
-		};
-		
 	}
 	
 	
@@ -365,8 +350,8 @@ public class MainController implements Initializable{
 
 		result.ifPresent(usernamePassword -> {
 			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-			//String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			String msg = "Welcome Developer" ; // test only 
+			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
+			//String msg = "Welcome Developer" ; // test only 
 			if(msg.contains("Welcome"))
 				btnLaunch.setDisable(false);
 			tfMessageBox.setText(msg);
