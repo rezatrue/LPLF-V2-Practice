@@ -238,7 +238,6 @@ public class MainController implements Initializable{
 			
 			@Override
 			public void run() {
-				System.out.println(">>>>");
 					
 				int index = 0; // number of loop iteration / list serial number
 				int count = 0; // counts number of converted links
@@ -265,16 +264,19 @@ public class MainController implements Initializable{
 
 					index++;
 					if (index + 1 == list.size() || index + 1 == count || btnRun.getText().contains("Run") || limits <= 0) {
-						btnRun.setText("Run");
 						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
 						tfLimits.setText(String.valueOf(limits));
+						// unable to set button text from different thread
+						// btnRun.setText("Run"); 
 						return;
 					}
 						
 				}
 			}
-		}).start();	
+		}).start();
+		
 	}
+	
 	
 	
 	@FXML
