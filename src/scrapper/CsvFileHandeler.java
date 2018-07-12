@@ -55,14 +55,14 @@ public class CsvFileHandeler {
         if(rightFormat) {
 	        while ((row = reader.readLine()) != null) {
 				List<String> line = parseLine(row);
-				info = new Info(line.get(0), line.get(1), line.get(2), line.get(3), line.get(4), line.get(5),
-						line.get(6), line.get(7), line.get(8), line.get(9));
+				info = new Info(removingQuotes(line.get(0)), removingQuotes(line.get(1)), removingQuotes(line.get(2)), removingQuotes(line.get(3)), removingQuotes(line.get(4)), removingQuotes(line.get(5)),
+						removingQuotes(line.get(6)), removingQuotes(line.get(7)), removingQuotes(line.get(8)), removingQuotes(line.get(9)));
 				list.add(info);
 				
-				System.out.println("[Linkedin_Profile_URL= " + line.get(0) + ", First_Name= " + line.get(1)
-						+ " , Last_Name=" + line.get(2) + ", Email_ID= " + line.get(3) + ", Contact_Number= "
-						+ line.get(4) + " , Location=" + line.get(5) + ", Industry= " + line.get(6) + ", Designation= "
-						+ line.get(7) + " , Company_Name=" + line.get(8) + ", Company_Size= " + line.get(9) + "]");
+				System.out.println("[Linkedin_Profile_URL= " + line.get(0) + "; First_Name= " + line.get(1)
+						+ " ; Last_Name=" + line.get(2) + "; Email_ID= " + line.get(3) + "; Contact_Number= "
+						+ line.get(4) + " ; Location=" + line.get(5) + "; Industry= " + line.get(6) + "; Designation= "
+						+ line.get(7) + " ; Company_Name=" + line.get(8) + "; Company_Size= " + line.get(9) + "]");
 			}
 		}
         
@@ -75,6 +75,20 @@ public class CsvFileHandeler {
         System.out.println("size : " + list.size());
 
 		return list;
+	}
+	
+	// Quotes "" creates problem when file load second time
+	// we need to remove those
+	protected String removingQuotes(String text) {
+		String newText = text;
+
+			if (text.startsWith("\"")) {
+				System.out.println("newText > > >");
+				newText = text.substring(1, text.length());
+				System.out.println("newText ::: " + newText);
+			}
+				
+		return newText;
 	}
 	
 	
