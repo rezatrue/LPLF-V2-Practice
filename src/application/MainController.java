@@ -78,7 +78,7 @@ public class MainController extends Service<String> implements Initializable{
 		btnLaunch.setDisable(true);
 		btnLogin.setDisable(true);
 		btnBrowse.setDisable(true);
-		btnRun.setDisable(false);  // testing setup
+		btnRun.setDisable(true);  
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
@@ -193,8 +193,7 @@ public class MainController extends Service<String> implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		 // testing setup
-		/*
+		
 		// checking limits, how many links need to convert
 		int limits = 0;
 		if(!tfLimits.getText().isEmpty()) {
@@ -223,14 +222,8 @@ public class MainController extends Service<String> implements Initializable{
 				return;
 			}
 		}
-		*/
 		
-//		if(btnRun.getText().equals("Run"))
-//			{btnRun.setText("Pause"); 
-//			// newRunThread(); // testing setup
-//			}
-//		else if(btnRun.getText().equals("Pause"))
-//				btnRun.setText("Run"); 
+	
 		
 		this.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			
@@ -247,9 +240,9 @@ public class MainController extends Service<String> implements Initializable{
 		
 		if(btnRun.getText().equals("Run")){
 			btnRun.setText("Pause"); 
-			if(this.getState().toString() == "READY") this.start();
-			if(this.getState().toString() == "SUCCEEDED") this.restart();
-		// newRunThread(); // testing setup
+			String statustxt = this.getState().toString();
+			if(statustxt == "READY") this.start();
+			if(statustxt == "SUCCEEDED" || statustxt == "CANCELLED") this.restart();
 		}
 		else if(btnRun.getText().equals("Pause")) {
 			btnRun.setText("Run");
@@ -260,7 +253,7 @@ public class MainController extends Service<String> implements Initializable{
 	}
 	
 
-	
+	// no need this method any more 
 	public void newRunThread() {
 
 		new Thread(new Runnable() {
@@ -381,8 +374,7 @@ public class MainController extends Service<String> implements Initializable{
 
 		result.ifPresent(usernamePassword -> {
 			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-			//String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			String msg = "Welcome Developer" ;  // testing setup
+			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
 			if(msg.contains("Welcome"))
 				btnLaunch.setDisable(false);
 			tfMessageBox.setText(msg);
