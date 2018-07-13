@@ -317,12 +317,20 @@ public class MainController extends Service<String> implements Initializable{
 
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
-		dialog.setTitle("Login");
-		dialog.setHeaderText("Please Enter your usernmae & password");
+		dialog.setTitle("Please Login");
+		dialog.setHeaderText("Enter your usernmae & password");
+		
+		File file = new File("image/login.png");
+        Image imageLock = new Image(file.toURI().toString());
+        ImageView lockView = new ImageView();
+        lockView.setImage(imageLock);
+        lockView.setFitHeight(75);
+        lockView.setFitWidth(75);
 
+		
 		// Set the icon (must be included in the project).
         //dialog.setGraphic(new ImageView(this.getClass().getResource("image/login.png").toString()));
-		
+        dialog.setGraphic(lockView);
 
 		// Set the button types.
 		ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
