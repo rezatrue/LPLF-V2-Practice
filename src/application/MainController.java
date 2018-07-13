@@ -13,7 +13,11 @@ import db.DBHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -38,7 +42,7 @@ import scrapper.CsvFileHandeler;
 import scrapper.FireFoxOperator;
 import scrapper.Info;
 
-public class MainController implements Initializable{
+public class MainController extends Service<String> implements Initializable{
 	
 	@FXML
 	private Button btnLaunch, btnLogin, btnSettings, btnBrowse, btnRun, btnPrintList; 
@@ -221,13 +225,37 @@ public class MainController implements Initializable{
 		}
 		*/
 		
-		if(btnRun.getText().equals("Run"))
-			{btnRun.setText("Pause"); 
-			// newRunThread(); // testing setup
-			}
-		else if(btnRun.getText().equals("Pause"))
-				btnRun.setText("Run"); 
+//		if(btnRun.getText().equals("Run"))
+//			{btnRun.setText("Pause"); 
+//			// newRunThread(); // testing setup
+//			}
+//		else if(btnRun.getText().equals("Pause"))
+//				btnRun.setText("Run"); 
+		
+		this.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			
+			@Override
+			public void handle(WorkerStateEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println("Done : " + event.getSource().getValue()) ;
+				btnRun.setText(event.getSource().getValue().toString());
+				
+			}
+		});
+		
+		System.out.println("service Status : " + this.getState());
+		
+		if(btnRun.getText().equals("Run")){
+			btnRun.setText("Pause"); 
+			if(this.getState().toString() == "READY") this.start();
+			if(this.getState().toString() == "SUCCEEDED") this.restart();
+		// newRunThread(); // testing setup
+		}
+		else if(btnRun.getText().equals("Pause")) {
+			btnRun.setText("Run");
+			if(this.getState().toString() == "RUNNING") this.cancel();
+		}
+				
 				
 	}
 	
@@ -361,6 +389,56 @@ public class MainController implements Initializable{
 
 		});
 
+	}
+
+
+	
+
+	// https://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
+	@Override
+	protected Task<String> createTask() {
+		// TODO Auto-generated method stub
+		return new Task<String>() {
+			
+			@Override
+			protected String call() throws Exception {
+				System.out.println("I am doing assigned a Task ") ;
+				
+				int index = 0; // number of loop iteration / list serial number
+				int count = 0; // counts number of converted links
+				int limits = Integer.parseInt(tfLimits.getText());
+				Info info = null;
+				String link = "";
+				String newlink = "";
+				while (limits != 0 && btnRun.getText().contains("Pause")) {
+
+					info = list.get(index);
+					link = info.getLink();
+					if (link.contains("linkedin.com/sales")) {
+						newlink = fireFoxOperator.getPublicLink(link);
+						if(link!=newlink) {
+							info.setLink(newlink);
+							list.set(index, info);
+							count++;
+							limits--;
+							tfMessageBox.setText(count + " Links converted, process continues....");
+							System.out.println(count + " Links converted");
+						}
+						
+					}
+
+					index++;
+					if (index + 1 == list.size() || index + 1 == count || btnRun.getText().contains("Run") || limits <= 0) {
+						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
+						tfLimits.setText(String.valueOf(limits));
+						return "Run";
+					}
+						
+				}
+				
+				return "Run";
+			}
+		};
 	}
 	
 }
