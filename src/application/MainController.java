@@ -74,7 +74,7 @@ public class MainController implements Initializable{
 		btnLaunch.setDisable(true);
 		btnLogin.setDisable(true);
 		btnBrowse.setDisable(true);
-		btnRun.setDisable(true); 
+		btnRun.setDisable(false);  // testing setup
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
@@ -189,7 +189,8 @@ public class MainController implements Initializable{
 	@FXML
 	private void runBtnAction(ActionEvent event) {
 		System.out.println("Run Button");
-		
+		 // testing setup
+		/*
 		// checking limits, how many links need to convert
 		int limits = 0;
 		if(!tfLimits.getText().isEmpty()) {
@@ -218,11 +219,11 @@ public class MainController implements Initializable{
 				return;
 			}
 		}
-
+		*/
 		
 		if(btnRun.getText().equals("Run"))
 			{btnRun.setText("Pause"); 
-			newRunThread();
+			// newRunThread(); // testing setup
 			}
 		else if(btnRun.getText().equals("Pause"))
 				btnRun.setText("Run"); 
@@ -352,8 +353,8 @@ public class MainController implements Initializable{
 
 		result.ifPresent(usernamePassword -> {
 			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			// String msg = "Welcome Developer" ; // test only 
+			//String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
+			String msg = "Welcome Developer" ;  // testing setup
 			if(msg.contains("Welcome"))
 				btnLaunch.setDisable(false);
 			tfMessageBox.setText(msg);
