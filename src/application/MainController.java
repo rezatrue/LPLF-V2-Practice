@@ -252,53 +252,6 @@ public class MainController extends Service<String> implements Initializable{
 				
 	}
 	
-
-	// no need this method any more 
-	public void newRunThread() {
-
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-					
-				int index = 0; // number of loop iteration / list serial number
-				int count = 0; // counts number of converted links
-				int limits = Integer.parseInt(tfLimits.getText());
-				Info info = null;
-				String link = "";
-				String newlink = "";
-				while (limits != 0 && btnRun.getText().contains("Pause")) {
-
-					info = list.get(index);
-					link = info.getLink();
-					if (link.contains("linkedin.com/sales")) {
-						newlink = fireFoxOperator.getPublicLink(link);
-						if(link!=newlink) {
-							info.setLink(newlink);
-							list.set(index, info);
-							count++;
-							limits--;
-							tfMessageBox.setText(count + " Links converted, process continues....");
-							System.out.println(count + " Links converted");
-						}
-						
-					}
-
-					index++;
-					if (index + 1 == list.size() || index + 1 == count || btnRun.getText().contains("Run") || limits <= 0) {
-						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
-						tfLimits.setText(String.valueOf(limits));
-						// unable to set button text from different thread
-						// btnRun.setText("Run"); 
-						return;
-					}
-						
-				}
-			}
-		}).start();
-		
-	}
-	
 	
 	
 	@FXML
@@ -428,7 +381,7 @@ public class MainController extends Service<String> implements Initializable{
 					}
 
 					index++;
-					if (index + 1 == list.size() || index + 1 == count || btnRun.getText().contains("Run") || limits <= 0) {
+					if (index == list.size() || index == count || btnRun.getText().contains("Run") || limits <= 0) {
 						tfMessageBox.setText("Conversion Completed. Total : "+ count + " links converted.");
 						tfLimits.setText(String.valueOf(limits));
 						return "Run";
