@@ -270,7 +270,7 @@ public class MainController extends Service<String> implements Initializable{
 
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
-		dialog.setTitle("Please Login");
+		dialog.setTitle("LPLF Login");
 		dialog.setHeaderText("Enter your usernmae & password");
 		
 		File file = new File("image/login.png");
