@@ -52,7 +52,7 @@ public class MainController extends Service<String> implements Initializable{
 	private PasswordField pfPassword;
 	
 	@FXML
-	private ImageView logoView;
+	//private ImageView logoView;
 	private DBHandler dBHandler;
 	private Preferences prefs;
 	
@@ -83,9 +83,9 @@ public class MainController extends Service<String> implements Initializable{
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
 		pfPassword.setText(prefs.get("linkedinPassword", ""));
 		
-		File file = new File("image/yin-yang.jpg");
+		/*File file = new File("image/yin-yang.jpg");
         Image image = new Image(file.toURI().toString());
-        logoView.setImage(image);
+        logoView.setImage(image);*/
         
         //stackoverflow.com/questions/7555564/what-is-the-recommended-way-to-make-a-numeric-textfield-in-javafx
         tfLimits.textProperty().addListener(new ChangeListener<String>() {
