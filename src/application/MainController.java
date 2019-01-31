@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+import api.ApiClient;
 import db.DBHandler;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -53,9 +54,9 @@ public class MainController extends Service<String> implements Initializable{
 	
 	@FXML
 	//private ImageView logoView;
-	private DBHandler dBHandler;
 	private Preferences prefs;
-	
+	private ApiClient apiClient; 
+
 	CsvFileHandeler csvFileHandeler = null;
 	LinkedList<Info> list = null;
 	FireFoxOperator fireFoxOperator = null;
@@ -75,9 +76,9 @@ public class MainController extends Service<String> implements Initializable{
 		prefs = Preferences.userRoot().node("db_lplf");
 		csvFileHandeler = new CsvFileHandeler();
 		fireFoxOperator = new FireFoxOperator();
-		btnLaunch.setDisable(true);
-		btnLogin.setDisable(true);
-		btnBrowse.setDisable(true);
+		btnLaunch.setDisable(true); 
+		btnLogin.setDisable(true); 
+		btnBrowse.setDisable(true); 
 		btnRun.setDisable(true);  
 		
 		tfLinkedinId.setText(prefs.get("linkedinUser", ""));
@@ -252,8 +253,7 @@ public class MainController extends Service<String> implements Initializable{
 				
 	}
 	
-	
-	
+		
 	@FXML
 	private void printListBtnAction(ActionEvent event) {
 		System.out.println("Print Button");
@@ -265,8 +265,8 @@ public class MainController extends Service<String> implements Initializable{
 	// just copy pest
 
 	private void loginDialoag() {
-		
-		dBHandler = new DBHandler();
+		apiClient = new ApiClient();
+		String msg = "";
 
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -334,18 +334,17 @@ public class MainController extends Service<String> implements Initializable{
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(usernamePassword -> {
-			//System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-			String msg = dBHandler.userAuth(usernamePassword.getKey(), usernamePassword.getValue());
-			if(msg.contains("Welcome"))
-				btnLaunch.setDisable(false);
-			tfMessageBox.setText(msg);
-
+			System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
 		});
+		
+		msg = apiClient.userAuth(username.getText(), password.getText());
+
+		if(msg.contains("Welcome"))
+			btnLaunch.setDisable(false);
+		tfMessageBox.setText(msg);
 
 	}
 
-
-	
 
 	// https://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm
 	@Override
